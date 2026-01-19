@@ -1,0 +1,267 @@
+# Loop Maestro Presets
+# Copy and customize these for common project types
+
+# =============================================================================
+# PRESET: Feature Development (Full Cycle)
+# =============================================================================
+feature-development:
+  description: "Complete feature from design to deployment"
+  phases:
+    - id: design
+      hat: architect
+      goal: "Design feature architecture and API contracts"
+      gates: ["API spec complete", "Types defined"]
+      publishes: design:complete
+
+    - id: implement
+      hat: implementer
+      depends_on: [design]
+      goal: "Implement feature following design"
+      gates: ["Typecheck passes", "Lint passes", "Build succeeds"]
+      publishes: code:complete
+
+    - id: test
+      hat: tester
+      depends_on: [implement]
+      goal: "Achieve test coverage and verify edge cases"
+      gates: ["All tests pass", "Coverage >= 80%"]
+      publishes: tests:pass
+
+    - id: review
+      hat: reviewer
+      depends_on: [test]
+      goal: "Code review and security check"
+      gates: ["No critical issues", "Security review passed"]
+      publishes: review:approved
+
+    - id: docs
+      hat: documenter
+      depends_on: [review]
+      goal: "Document feature for users"
+      gates: ["API docs complete", "README updated"]
+      publishes: docs:complete
+
+# =============================================================================
+# PRESET: Test-Driven Development (TDD)
+# =============================================================================
+tdd:
+  description: "Test-first development cycle"
+  phases:
+    - id: spec
+      hat: architect
+      goal: "Define interfaces and test scenarios"
+      gates: ["Interfaces defined", "Test scenarios documented"]
+      publishes: spec:complete
+
+    - id: test-first
+      hat: tester
+      depends_on: [spec]
+      goal: "Write failing tests for all scenarios"
+      gates: ["Tests written", "All tests fail (not error)"]
+      publishes: tests:written
+
+    - id: implement
+      hat: implementer
+      depends_on: [test-first]
+      goal: "Make all tests pass with minimal code"
+      gates: ["All tests pass", "No extra code"]
+      publishes: tests:pass
+
+    - id: refactor
+      hat: optimizer
+      depends_on: [implement]
+      goal: "Refactor while keeping tests green"
+      gates: ["Tests still pass", "Code quality improved"]
+      publishes: refactor:complete
+
+# =============================================================================
+# PRESET: Bug Fix
+# =============================================================================
+bug-fix:
+  description: "Systematic bug investigation and fix"
+  phases:
+    - id: reproduce
+      hat: debugger
+      goal: "Reproduce and document the bug"
+      gates: ["Bug reproducible", "Steps documented"]
+      publishes: bug:reproduced
+
+    - id: investigate
+      hat: debugger
+      depends_on: [reproduce]
+      goal: "Find root cause"
+      gates: ["Root cause identified", "Analysis documented"]
+      publishes: cause:found
+
+    - id: fix
+      hat: implementer
+      depends_on: [investigate]
+      goal: "Implement minimal fix"
+      gates: ["Fix implemented", "Regression test added"]
+      publishes: fix:implemented
+
+    - id: verify
+      hat: tester
+      depends_on: [fix]
+      goal: "Verify fix and no regressions"
+      gates: ["Bug no longer reproduces", "All tests pass"]
+      publishes: fix:verified
+
+# =============================================================================
+# PRESET: Refactoring
+# =============================================================================
+refactoring:
+  description: "Safe refactoring with test coverage"
+  phases:
+    - id: coverage
+      hat: tester
+      goal: "Ensure test coverage before refactoring"
+      gates: ["Coverage >= 90% for target code"]
+      publishes: coverage:ready
+
+    - id: refactor
+      hat: optimizer
+      depends_on: [coverage]
+      goal: "Refactor in small, testable steps"
+      gates: ["Tests pass after each change", "No behavior changes"]
+      publishes: refactor:complete
+
+    - id: verify
+      hat: tester
+      depends_on: [refactor]
+      goal: "Comprehensive verification"
+      gates: ["All tests pass", "No performance regression"]
+      publishes: verify:complete
+
+# =============================================================================
+# PRESET: API Development
+# =============================================================================
+api-development:
+  description: "API-first development"
+  phases:
+    - id: contract
+      hat: architect
+      goal: "Define API contract (OpenAPI/GraphQL schema)"
+      gates: ["Schema validates", "Examples included"]
+      publishes: contract:complete
+
+    - id: mock
+      hat: implementer
+      depends_on: [contract]
+      goal: "Implement mock server"
+      gates: ["Mock matches contract", "Examples return correctly"]
+      publishes: mock:ready
+
+    - id: implement
+      hat: implementer
+      depends_on: [mock]
+      goal: "Implement real endpoints"
+      gates: ["Contract tests pass", "No mock fallbacks"]
+      publishes: api:implemented
+
+    - id: test
+      hat: tester
+      depends_on: [implement]
+      goal: "Integration and load testing"
+      gates: ["All endpoints tested", "Performance acceptable"]
+      publishes: api:tested
+
+# =============================================================================
+# PRESET: Code Review (Multi-Perspective)
+# =============================================================================
+multi-review:
+  description: "Comprehensive multi-perspective code review"
+  phases:
+    - id: security-review
+      hat: reviewer
+      goal: "Security-focused review"
+      gates: ["No vulnerabilities", "Auth/authz correct"]
+      publishes: security:reviewed
+
+    - id: perf-review
+      hat: optimizer
+      goal: "Performance-focused review"
+      parallel_with: [security-review]
+      gates: ["No performance anti-patterns"]
+      publishes: perf:reviewed
+
+    - id: quality-review
+      hat: reviewer
+      goal: "Code quality and maintainability review"
+      parallel_with: [security-review]
+      gates: ["Follows conventions", "Readable code"]
+      publishes: quality:reviewed
+
+    - id: merge-feedback
+      hat: reviewer
+      depends_on: [security-review, perf-review, quality-review]
+      goal: "Consolidate all review feedback"
+      gates: ["All reviews complete", "Action items clear"]
+      publishes: review:complete
+
+# =============================================================================
+# PRESET: Greenfield Project
+# =============================================================================
+greenfield:
+  description: "Start a new project from scratch"
+  phases:
+    - id: scaffold
+      hat: architect
+      goal: "Set up project structure and tooling"
+      gates: ["Project builds", "Linting configured", "Tests run"]
+      publishes: scaffold:complete
+
+    - id: foundation
+      hat: architect
+      depends_on: [scaffold]
+      goal: "Core architecture and patterns"
+      gates: ["Base classes defined", "Error handling pattern", "Logging set up"]
+      publishes: foundation:complete
+
+    - id: first-feature
+      hat: implementer
+      depends_on: [foundation]
+      goal: "Implement first vertical slice"
+      gates: ["Feature works end-to-end", "Pattern established"]
+      publishes: feature:complete
+
+    - id: ci-cd
+      hat: implementer
+      depends_on: [first-feature]
+      goal: "Set up CI/CD pipeline"
+      gates: ["Pipeline runs", "Tests in CI", "Deploy works"]
+      publishes: cicd:complete
+
+# =============================================================================
+# PRESET: Documentation Sprint
+# =============================================================================
+docs-sprint:
+  description: "Comprehensive documentation effort"
+  phases:
+    - id: audit
+      hat: reviewer
+      goal: "Audit existing documentation"
+      gates: ["Gaps identified", "Priority list created"]
+      publishes: audit:complete
+
+    - id: api-docs
+      hat: documenter
+      depends_on: [audit]
+      goal: "Document all public APIs"
+      gates: ["All endpoints documented", "Examples work"]
+      publishes: api-docs:complete
+
+    - id: guides
+      hat: documenter
+      depends_on: [audit]
+      parallel_with: [api-docs]
+      goal: "Write user guides and tutorials"
+      gates: ["Getting started guide", "Common use cases"]
+      publishes: guides:complete
+
+    - id: review
+      hat: reviewer
+      depends_on: [api-docs, guides]
+      goal: "Review all documentation"
+      gates: ["Technical accuracy", "No broken links"]
+      publishes: docs:reviewed
