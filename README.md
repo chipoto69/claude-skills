@@ -6,7 +6,7 @@ A curated collection of reusable skills for Claude Code / OpenCode that enhance 
 
 1. Clone this repository to your Claude skills directory:
 ```bash
-git clone https://github.com/YOUR_USERNAME/claude-skills.git ~/.claude/skills
+git clone https://github.com/chipoto69/claude-skills.git ~/.claude/skills
 ```
 
 2. Skills are automatically loaded by Claude Code when their trigger phrases are detected.
@@ -172,7 +172,7 @@ pip install chromadb sentence-transformers
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/YOUR_USERNAME/claude-skills.git ~/.claude/skills
+git clone https://github.com/chipoto69/claude-skills.git ~/.claude/skills
 ```
 
 2. **Configure environment variables** (add to `~/.zshrc` or `~/.bashrc`):
